@@ -1,6 +1,6 @@
 import logging
 import os
-from   import RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 from from_root import from_root
 from datetime import datetime
 

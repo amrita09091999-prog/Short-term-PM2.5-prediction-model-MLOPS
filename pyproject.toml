@@ -4,7 +4,7 @@ version = "0.0.1"
 description = "An end to end MLOPS project with environment hazard prediction usecase"
 authors = [{name = "Amrita Mandal", email = "amrita09091999@gmail.com"}]
 
-[tool.setuptools]
+[tool.setuptools] 
 packages = {find = {}}
 
 [tool.setuptools.dynamic]
