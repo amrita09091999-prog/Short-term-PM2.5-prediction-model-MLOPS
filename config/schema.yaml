@@ -1,0 +1,95 @@
+columns:
+  - state: category
+  - place: category
+  - latitude: float
+  - longitude: float
+  - date: datetime
+  - temperature_2m_max: float
+  - temperature_2m_min: float
+  - apparent_temperature_max: float
+  - apparent_temperature_min: float
+  - precipitation_sum: float
+  - rain_sum: float
+  - snowfall_sum: float
+  - precipitation_hours: float
+  - sunshine_duration: float
+  - daylight_duration: float
+  - wind_speed_10m_max: float
+  - wind_gusts_10m_max: float
+  - shortwave_radiation_sum: float
+  - et0_fao_evapotranspiration: float
+  - pm2_5_mean: float
+  - ozone_mean: float
+  - ozone_std: float
+  - ozone_min: float
+  - ozone_max: float
+  - dust_mean: float
+  - uv_index_max: float
+  - uv_index_mean: float
+  - alder_pollen_mean: float
+  - birch_pollen_mean: float
+  - mugwort_pollen_mean: float
+  - olive_pollen_mean: float
+  
+
+
+numerical_columns:
+  - latitude
+  - longitude
+  - temperature_2m_max
+  - temperature_2m_min
+  - apparent_temperature_max
+  - apparent_temperature_min
+  - precipitation_sum
+  - rain_sum
+  - snowfall_sum
+  - precipitation_hours
+  - sunshine_duration
+  - daylight_duration
+  - wind_speed_10m_max
+  - wind_gusts_10m_max
+  - shortwave_radiation_sum
+  - et0_fao_evapotranspiration
+  - pm2_5_mean
+  - ozone_mean
+  - ozone_std
+  - ozone_min
+  - ozone_max
+  - dust_mean
+  - uv_index_max
+  - uv_index_mean
+  - alder_pollen_mean
+  - birch_pollen_mean
+  - mugwort_pollen_mean
+  - olive_pollen_mean
+
+categorical_columns:
+  - state
+  - place
+
+date_columns:
+  - date
+
+drop_columns:
+  - state
+  - place
+  - latitude
+  - longitude
+  - date
+  - pm2_5_mean
+
+# for data transformation
+num_features:
+  - date
+  - temperature_2m_max
+  - temperature_2m_min
+  - apparent_temperature_max
+  - apparent_temperature_min
+  - shortwave_radiation_sum
+  - shortwave_radiation_sum
+  - sunshine_duration
+  - uv_index_max
+  - ozone_mean
+  - uv_index_mean
+  - dust_mean
+  - wind_speed_10m_max

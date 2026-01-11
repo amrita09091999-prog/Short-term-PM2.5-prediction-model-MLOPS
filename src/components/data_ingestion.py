@@ -45,7 +45,7 @@ class DataIngestion:
         except Exception as e:
             raise MyException(e,sys)
     
-    def compute_time_splits(self,df,train_weight, val_weight,date_col="date"):
+    def add_time_splits(self,df,train_weight,date_col="date"):
         df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
         if df[date_col].isna().any():
             raise ValueError("Date column contains invalid datetime values")
@@ -56,16 +56,16 @@ class DataIngestion:
         max_date = df[date_col].max()
         total_duration = max_date - min_date
 
-        train_end = min_date + total_duration * 0.81
-        val_end = min_date + total_duration * 0.91
-
-        return train_end, val_end
+        train_end = min_date + total_duration * train_weight
+        df["split"] = "test"
+        df.loc[df[date_col] <= train_end, "split"] = "train"
+        
+        return df
+        #val_end = min_date + total_duration * 0.91
     
-    def assign_splits(self,row, train_end, val_end):
+    def assign_splits(self,row, train_end):
         if row['date'] <= train_end:
             return 'train'
-        elif row['date'] <= val_end:
-            return 'val'
         else:
             return 'test'
 
@@ -80,12 +80,9 @@ class DataIngestion:
         logging.info("Entered split_data_as_train_test method of Data_Ingestion class")
 
         try:
-            # calculatin train, val , test splits and then saving it as a dataframe
-            train_end, val_end = self.compute_time_splits(dataframe,self.data_ingestion_config.train_weight,self.data_ingestion_config.val_weight)
-            dataframe['split'] = np.where(
-                dataframe['date'] <= train_end, 'train',
-                np.where(dataframe['date'] <= val_end, 'val', 'test')
-            )
+            #calculating train, val , test splits and then saving it as a dataframe
+            dataframe= self.add_time_splits(dataframe,self.data_ingestion_config.train_weight)
+            #dataframe['split'] = dataframe.apply(self.assign_splits(train_end = self.data_ingestion_config.train_weight), axis=1)
             logging.info("Performed train test split on the dataframe")
             logging.info(
                 "Exited split_data_as_train_test method of Data_Ingestion class"
@@ -95,10 +92,8 @@ class DataIngestion:
             
             logging.info(f"Exporting train and test file path.")
             train_data = dataframe[dataframe['split']=='train'].drop(columns = ['split'])
-            val_data = dataframe[dataframe['split']=='val'].drop(columns = ['split'])
             test_data = dataframe[dataframe['split']=='test'].drop(columns = ['split'])
             train_data.to_csv(self.data_ingestion_config.training_file_path,index=False,header=True)
-            val_data.to_csv(self.data_ingestion_config.validation_file_path,index=False,header=True)
             test_data.to_csv(self.data_ingestion_config.testing_file_path,index=False,header=True)
 
             logging.info(f"Exported train, validation and test file path.")
@@ -129,7 +124,6 @@ class DataIngestion:
             )
 
             data_ingestion_artifact = DataIngestionArtifact(trained_file_path=self.data_ingestion_config.training_file_path,
-            validation_file_path=self.data_ingestion_config.validation_file_path,
             test_file_path=self.data_ingestion_config.testing_file_path)
             
             logging.info(f"Data ingestion artifact: {data_ingestion_artifact}")

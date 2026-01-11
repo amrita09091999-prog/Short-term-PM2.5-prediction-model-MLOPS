@@ -41,8 +41,9 @@ Data Ingestion related constant start with DATA_INGESTION VAR NAME
 DATA_INGESTION_DIR_NAME: str = "data_ingestion"
 DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
 DATA_INGESTION_INGESTED_DIR: str = "ingested"
-TRAIN_WEIGHT: float = 0.81
+TRAIN_WEIGHT: float = 0.9
 VAL_WEIGHT: float = 0.91
+TRAIN_TEST_SPLIT: float = 0.1
 
 """
 Data Validation realted contant start with DATA_VALIDATION VAR NAME
