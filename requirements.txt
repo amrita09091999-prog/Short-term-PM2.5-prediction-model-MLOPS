@@ -13,7 +13,8 @@ imblearn
 from_root
 dill
 certifi
-PyYAML
+PyYA
+mlflow
 boto3
 mypy-boto3-s3
 botocore
@@ -22,4 +23,7 @@ psycopg2-binary
 imblearn
 setuptools
 wheel
+xgboost
+lightgbm
+dagshub
 -e .

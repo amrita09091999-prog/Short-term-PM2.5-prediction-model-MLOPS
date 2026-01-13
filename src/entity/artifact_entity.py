@@ -18,10 +18,11 @@ class DataTransformationArtifact:
 
 @dataclass
 class RegressionMetricArtifact:
-    r2:float
-    adj_r2:float
-    mae:float
-    rmse:float
+    best_model_name: str
+    best_model_r2:float
+    best_adj_r2:float
+    best_model_mae:float
+    best_model_rmse:float
 
 @dataclass
 class ModelTrainerArtifact:

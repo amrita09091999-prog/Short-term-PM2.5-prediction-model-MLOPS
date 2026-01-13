@@ -1,0 +1,38 @@
+models:
+  RandomForest:
+    class: RandomForestRegressor
+    module: sklearn.ensemble
+    params:
+      n_estimators: [300]
+      max_depth: [10]
+      n_jobs: [4]
+      min_samples_leaf: [5]
+  XGBoost:
+    class: XGBRegressor
+    module: xgboost
+    params:
+      n_estimators: [500,1500]
+      max_depth: [6,5]
+      learning_rate: [0.01,0.05]
+      objective: ["reg:squarederror"]
+      random_state: [42]
+      n_jobs: [4]
+
+  LightGBM:
+    class: LGBMRegressor
+    module: lightgbm
+    params:
+      num_leaves: [31,63]
+      max_depth: [-1, 10]
+      learning_rate: [0.1,0.05]
+      random_state: [42]
+      n_jobs: [4]
+
+  GradientBoosting:
+    class: GradientBoostingRegressor
+    module: sklearn.ensemble
+    params:
+      n_estimators: [200, 300, 500]
+      learning_rate: [0.01, 0.05]
+      max_depth: [3,5]
+      random_state: [42]

@@ -64,14 +64,12 @@ MODEL TRAINER related constant start with MODEL_TRAINER var name
 MODEL_TRAINER_DIR_NAME: str = "model_trainer"
 MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
-MODEL_TRAINER_EXPECTED_SCORE: float = 0.6
 MODEL_TRAINER_MODEL_CONFIG_FILE_PATH: str = os.path.join("config", "model.yaml")
-MODEL_TRAINER_N_ESTIMATORS=200
-MODEL_TRAINER_MIN_SAMPLES_SPLIT: int = 7
-MODEL_TRAINER_MIN_SAMPLES_LEAF: int = 6
-MIN_SAMPLES_SPLIT_MAX_DEPTH: int = 10
-MIN_SAMPLES_SPLIT_CRITERION: str = 'entropy'
-MIN_SAMPLES_SPLIT_RANDOM_STATE: int = 101
+PARAMETERS_FILE_PATH: str = os.path.join("config", "parameters.yaml")
+DAGSHUB_REPO_OWNER: str = "amrita09091999-prog"
+DAGSHUB_REPO_NAME: str = "Short-term-PM2.5-prediction-model-MLOPS"
+MLFLOW_EXPERIMENT_NAME: str = "PM2.5-Model-Training-2"
+BASE_ADJUSTED_R2_SCORE: float = 0.8
 
 """
 MODEL Evaluation related constants
