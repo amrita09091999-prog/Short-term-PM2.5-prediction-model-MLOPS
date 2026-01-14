@@ -19,13 +19,15 @@ class DataTransformationArtifact:
 @dataclass
 class RegressionMetricArtifact:
     best_model_name: str
-    best_model_r2:float
+    judgement_criteria:str
+    best_params: dict
     best_adj_r2:float
+    best_model_r2:float
     best_model_mae:float
     best_model_rmse:float
 
 @dataclass
-class ModelTrainerArtifact:
+class ModelExperimenterArtifact:
     trained_model_file_path:str 
     metric_artifact:RegressionMetricArtifact
 

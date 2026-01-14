@@ -59,11 +59,13 @@ DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
 DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR: str = "transformed_object"
 
 """
-MODEL TRAINER related constant start with MODEL_TRAINER var name
+MODEL EXPERIMENTER related constant start with MODEL_TRAINER var name
 """
 MODEL_TRAINER_DIR_NAME: str = "model_trainer"
 MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
+MODEL_TRAINER_TRAINED_MODEL_BEST_PARAMS: str = "best_model_params.json"
+MODEL_TRAINER_TRAINED_MODEL_BEST_METRICS: str = "best_model_metrics.json"
 MODEL_TRAINER_MODEL_CONFIG_FILE_PATH: str = os.path.join("config", "model.yaml")
 PARAMETERS_FILE_PATH: str = os.path.join("config", "parameters.yaml")
 DAGSHUB_REPO_OWNER: str = "amrita09091999-prog"
@@ -75,7 +77,7 @@ BASE_ADJUSTED_R2_SCORE: float = 0.8
 MODEL Evaluation related constants
 """
 MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
-MODEL_BUCKET_NAME = "my-model-mlopsproj"
+MODEL_BUCKET_NAME = "my-health-risk-predictor-model"
 MODEL_PUSHER_S3_KEY = "model-registry"
 
 

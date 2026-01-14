@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import dill
 import yaml
+import json
 from pandas import DataFrame
 
 from src.exception import MyException
@@ -27,6 +28,20 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, "w") as file:
             yaml.dump(content, file)
+    except Exception as e:
+        raise MyException(e, sys) from e
+
+def read_json_file(file_path: str) -> dict:
+    try:
+        with open(file_path,'r') as f:
+            return json.load(f)
+    except Exception as e:
+        raise MyException(e, sys) from e
+
+def write_json_file(file_path:str ,content:dict) -> None:
+    try:
+        with open(file_path,'w') as f:
+            json.dump(file_path,f)
     except Exception as e:
         raise MyException(e, sys) from e
 

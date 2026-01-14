@@ -15,12 +15,13 @@ from src.logger import logging
 from src.utils.main_utils import (
     load_numpy_array_data,
     read_yaml_file,
-    save_object
+    save_object,
+    write_json_file
 )
-from src.entity.config_entity import ModelTrainerConfig
+from src.entity.config_entity import ModelExperimenterConfig
 from src.entity.artifact_entity import (
     DataTransformationArtifact,
-    ModelTrainerArtifact,
+    ModelExperimenterArtifact,
     RegressionMetricArtifact
 )
 from src.constants import (
@@ -32,14 +33,14 @@ from src.constants import (
 )
 
 
-class ModelTrainer:
+class ModelExperimenter:
     def __init__(
         self,
         data_transformation_artifact: DataTransformationArtifact,
-        model_trainer_config: ModelTrainerConfig,
+        model_experimenter_config: ModelExperimenterConfig,
     ):
         self.data_transformation_artifact = data_transformation_artifact
-        self.model_trainer_config = model_trainer_config
+        self.model_experimenter_config = model_experimenter_config
 
         self._parameters_config = read_yaml_file(PARAMETERS_FILE_PATH)
 
@@ -163,7 +164,8 @@ class ModelTrainer:
 
             metric_artifact = RegressionMetricArtifact(
                 best_model_name=best_model_name,
-                best_params = best_params
+                judgement_criterion = 'Adjusted R2',
+                best_params = best_params,
                 best_model_r2=best_model_r2,
                 best_adj_r2=best_adj_r2,
                 best_model_mae=best_model_mae,
@@ -175,7 +177,7 @@ class ModelTrainer:
         except Exception as e:
             raise MyException(e, sys)
     
-    def initiate_model_trainer(self) -> ModelTrainerArtifact:
+    def initiate_model_trainer(self) -> ModelExperimenterArtifact:
         logging.info("Entered initiate_model_trainer method of ModelTrainer class")
         """
         Method Name :   initiate_model_trainer
@@ -202,12 +204,23 @@ class ModelTrainer:
                 raise Exception("No model found with score above the base adjusted R2 score")
 
             logging.info("Saving the final best model as performace is better than the base adjusted R2 score.")
-            save_object(self.model_trainer_config.trained_model_file_path,trained_model)
+            save_object(self.model_experimenter_config.trained_model_file_path,trained_model)
+            write_json_file(self.model_experimenter_config.trained_model_best_params_file_path,metric_artifact.best_params)
+            best_metrics = {
+                'best_model':metric_artifact.best_model_name,
+                'judgement_criteria':metric_artifact.judgement_criterion,
+                'best_adj_r2':metric_artifact.best_adj_r2,
+                'best_r2':metric_artifact.best_model_r2,
+                'best_mae':metric_artifact.best_model_mae,
+                'best_rmse':metric_artifact.best_model_rmse
+            }
+            write_json_file(self.model_experimenter_config.trained_model_best_metrics_file_path,best_metrics)
             model_trainer_artifact = ModelTrainerArtifact(
-                    trained_model_file_path=self.model_trainer_config.trained_model_file_path,
+                    trained_model_file_path=self.model_experimenter_config.trained_model_file_path,
                     metric_artifact=metric_artifact,
                 )
             logging.info(f"Model trainer artifact: {model_trainer_artifact}")
+            
             return model_trainer_artifact
         
         except Exception as e:
