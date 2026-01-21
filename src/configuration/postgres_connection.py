@@ -1,9 +1,9 @@
 import os
 import sys
 from sqlalchemy import create_engine
+from sqlalchemy import inspect
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine import Engine
-
 from src.exception import MyException
 from src.logger import logging
 from src.constants import (
@@ -48,6 +48,7 @@ class PostgresClient:
                 logging.info("PostgreSQL engine created successfully.")
 
             self.engine = PostgresClient.engine
+            self.inspector = inspect(self.engine)
             self.SessionLocal = sessionmaker(
                 autocommit=False,
                 autoflush=False,

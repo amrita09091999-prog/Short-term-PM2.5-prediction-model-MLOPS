@@ -83,3 +83,12 @@ MODEL_PUSHER_S3_KEY = "model-registry"
 
 APP_HOST = "0.0.0.0"
 APP_PORT = 5000
+
+"""
+Data extraction from API"""
+COORDINATES_FILE_PATH = os.path.join("data_extraction_api","extraction_util_functions","coordinates.csv")
+WEATHER_API_URL = "https://archive-api.open-meteo.com/v1/archive"
+AQI_API_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
+LAST_INDEX_FILE_PATH = os.path.join("data_extraction_api","extraction_util_functions","last_index.txt")
+WEATHER_TABLE_NAME = "historical_weather_table_predictions"
+AQI_TABLE_NAME = "historical_aqi_table_predictions"

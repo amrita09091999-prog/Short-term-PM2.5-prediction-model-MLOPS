@@ -1,11 +1,21 @@
-[project]
-name = "src"
-version = "0.0.1"
-description = "An end to end MLOPS project with environment hazard prediction usecase"
-authors = [{name = "Amrita Mandal", email = "amrita09091999@gmail.com"}]
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
-[tool.setuptools] 
-packages = {find = {}}
+[project]
+name = "pm25-mlops"
+version = "0.0.1"
+description = "End-to-end MLOps project for environmental hazard (PM2.5) prediction"
+authors = [
+    { name = "Amrita Mandal", email = "amrita09091999@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = { find = {} }
 
 [tool.setuptools.dynamic]
-dependencies = {file = "requirements.txt"}
+dependencies = { file = ["requirements.txt"] }

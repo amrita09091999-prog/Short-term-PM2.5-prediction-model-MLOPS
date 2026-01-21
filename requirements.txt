@@ -26,4 +26,3 @@ wheel
 xgboost
 lightgbm
 dagshub
--e .

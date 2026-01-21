@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from src.configuration.postgres_connection import PostgresClient
-from src.constants import DATABASE_NAME
+from src.constants import DATABASE_NAME,WEATHER_TABLE_NAME,AQI_TABLE_NAME
 from src.exception import MyException
 
 class RawData:
@@ -14,6 +14,15 @@ class RawData:
     def __init__(self) -> None:
         try:
             self.pg_client = PostgresClient(database_name=DATABASE_NAME)
+            self.engine = self.pg_client.engine
+        except Exception as e:
+            raise MyException(e, sys)
+    def  check_table_existance(self,table_name):
+        try:
+            if self.pg_client.inspector.has_table(table_name):
+                return True
+            else:
+                return False
         except Exception as e:
             raise MyException(e, sys)
 
