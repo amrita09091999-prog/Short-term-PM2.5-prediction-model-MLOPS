@@ -177,13 +177,13 @@ class ModelExperimenter:
         except Exception as e:
             raise MyException(e, sys)
     
-    def initiate_model_trainer(self) -> ModelExperimenterArtifact:
-        logging.info("Entered initiate_model_trainer method of ModelTrainer class")
+    def initiate_model_experimenter(self) -> ModelExperimenterArtifact:
+        logging.info("Entered initiate_model_model method of ModelExperimenter class")
         """
-        Method Name :   initiate_model_trainer
-        Description :   This function initiates the model training steps
+        Method Name :   initiate_model_experimenter
+        Description :   This function initiates the model experimentation steps
         
-        Output      :   Returns model trainer artifact
+        Output      :   Returns model experimenter artifact
         On Failure  :   Write an exception log and then raise an exception
         """
         # ---------------- Load Data ----------------

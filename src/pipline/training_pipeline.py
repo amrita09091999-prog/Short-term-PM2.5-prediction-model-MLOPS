@@ -6,6 +6,7 @@ from src.utils.main_utils import read_json_file
 from src.components.data_ingestion import DataIngestion
 from src.components.data_validation import DataValidation
 from src.components.data_transformation import DataTransformation
+from src.components.model_experimenter import ModelTrainer
 from src.components.model_experimenter import ModelExperimenter
 from src.components.model_evaluation import ModelEvaluation
 from src.components.model_pusher import ModelPusher
@@ -14,12 +15,14 @@ from src.entity.config_entity import (DataIngestionConfig,
                                         DataValidationConfig,
                                         DataTransformationConfig,
                                         ModelExperimenterConfig,
+                                        ModelExperimenterConfig,
                                         ModelEvaluationConfig,
                                         ModelPusherConfig)
                                           
 from src.entity.artifact_entity import (DataIngestionArtifact,
                                             DataValidationArtifact,
                                             DataTransformationArtifact,
+                                            DataTrainerArtifact,
                                             ModelExperimenterArtifact,
                                             ModelEvaluationArtifact,
                                             ModelPusherArtifact)
@@ -98,9 +101,23 @@ class TrainPipeline:
 
         except Exception as e:
             raise MyException(e, sys)
+    
+    def start_model_experimenter(self, data_transformation_artifact: DataTransformationArtifact) -> ModelExperimenterArtifact:
+        """
+        This method of TrainPipeline class is responsible for model experimentation
+        """
+        try:
+            model_experimenter = ModelExperimenter(data_transformation_artifact=data_transformation_artifact,
+                                         model_trainer_config=self.model_experimenter_config
+                                         )
+            model_experimenter_artifact = model_experimenter.initiate_model_experimenter()
+            return model_experimenter_artifact
+
+        except Exception as e:
+            raise MyException(e, sys)
 
     def start_model_evaluation(self, data_transformation_artifact: DataTransformationArtifact,
-                               model_experimenter_artifact: ModelExperimenterArtifact) -> ModelEvaluationArtifact:
+                               model_trainer_artifact: ModelExperimenterArtifact) -> ModelEvaluationArtifact:
         """
         This method of TrainPipeline class is responsible for starting modle evaluation
         """
@@ -126,24 +143,23 @@ class TrainPipeline:
         except Exception as e:
             raise MyException(e, sys)
 
-    def run_pipeline(self,) -> None:
+    def run_pipeline(self,model_experimenter:bool) -> None:
         """
         This method of TrainPipeline class is responsible for running complete pipeline
         """
         try:
-            #data_ingestion_artifact = self.start_data_ingestion()
-            #data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
-            #data_transformation_artifact = self.start_data_transformation(
-                #data_ingestion_artifact=data_ingestion_artifact, data_validation_artifact=data_validation_artifact)
-            #model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
-            data_transformation_artifact = DataTransformationArtifact(transformed_train_file_path = "/Users/amritamandal/Desktop/Python/MLOPS/Short-term-PM2.5-prediction-model-MLOPS/artifact/01_13_2026_12_55_36/data_transformation/transformed/train.npy",transformed_test_file_path ="/Users/amritamandal/Desktop/Python/MLOPS/Short-term-PM2.5-prediction-model-MLOPS/artifact/01_13_2026_12_55_36/data_transformation/transformed/test.npy")
-            metrics_json = read_json_file("/Users/amritamandal/Desktop/Python/MLOPS/Short-term-PM2.5-prediction-model-MLOPS/artifact/01_13_2026_12_55_36/model_trainer/trained_model/best_model_metrics.json")
-            class MetricArtifact:
-                best_model_r2 = metrics_json['best_adj_r2']
-            metric_artifact = MetricArtifact()
-            model_experimenter_artifact = ModelExperimenterArtifact(trained_model_file_path = "/Users/amritamandal/Desktop/Python/MLOPS/Short-term-PM2.5-prediction-model-MLOPS/artifact/01_13_2026_12_55_36/model_trainer/trained_model/model.pkl",metric_artifact = metric_artifact)
+            data_ingestion_artifact = self.start_data_ingestion()
+            data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
+            data_transformation_artifact = self.start_data_transformation(
+                data_ingestion_artifact=data_ingestion_artifact, data_validation_artifact=data_validation_artifact)
+            if model_experimendet==1:
+                model_trainer_artifact = self.start_model_experimenter(data_transformation_artifact= data_transformation_artifact)
+            else:
+                model = "pull model from s3 bucket and then re use it here"
+                model_trainer_artifact = self.model_trainer(model, data_transformation_artifact)
+
             model_evaluation_artifact = self.start_model_evaluation(data_transformation_artifact=data_transformation_artifact,
-                                                                     model_experimenter_artifact=model_experimenter_artifact)
+                                                                     model_experimenter_artifact=model_trainer_artifact)
             if not model_evaluation_artifact.is_model_accepted:
                 logging.info(f"Model not accepted.")
                 return None
